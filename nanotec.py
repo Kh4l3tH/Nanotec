@@ -3,7 +3,6 @@ Created on Jun 16, 2011
 
 @author: maxim
 '''
-import serial
 import string
 
 class Nanotec(object):
@@ -13,7 +12,7 @@ class Nanotec(object):
     self.comPort.flushInput()
     self.setMotor(1)
     self.connected = True
-          
+
   def executeCmd(self, command, value = ''):
     "Befehl zur SMCI schicken."
     try:
@@ -22,7 +21,7 @@ class Nanotec(object):
     except ValueError:
       raise ValueError("Uebergebene Werte koennen nicht in Strings konvertiert werden.")
       return False
-    
+
     counter = 0
     if strCmd[0] == ':':
       strCmd = strCmd + '=' #Bei einem langen Befehl muss ein = angefuegt werden
@@ -42,7 +41,7 @@ class Nanotec(object):
     print line
     raise ValueError("Die Anzahl der Versuche wurde ueberschritten.")
     return False
-  
+
   def getVal(self, command, value = ''):
     try:
       strCmd = str(command)
@@ -50,7 +49,7 @@ class Nanotec(object):
     except ValueError:
       raise ValueError("Uebergebene Werte koennen nicht in Strings konvertiert werden.")
       return False
-    
+
     counter = 0
     if strCmd[0] != ':' or (strCmd[0] == ':' and (strCmd[1] == 'b' or strCmd[1] == 'B')):
       strCmd = 'Z' + strVal + strCmd #Bei einem kurzen Befehl ein Z anhaengen
@@ -90,14 +89,14 @@ class Nanotec(object):
       if counter == self.tries:
         raise ValueError('Timeout')
         return -1
-      
+
   def getState(self):
     '''
     Diese Funktion holt den Status der Nanotec-Karte und gibt ihn zurueck.
     '''
     counter = 0
     cmd = '#'+self.motor+'$\r'
-    
+
     while counter < self.tries:
       counter += 1
       try:
@@ -120,7 +119,7 @@ class Nanotec(object):
     if counter == self.tries:
       raise ValueError('Timeout')
       return False
-      
+
   def setMotor(self, motor):
     '''
     Diese Funktion setzt den Motor, an den alle Funktionen gesendet werden sollen.\n
@@ -140,19 +139,19 @@ class Nanotec(object):
         raise ValueError("Als String fuer eine Motor-ID ist einzig * moeglich.")
     raise ValueError(motor)
     return False
-  
+
   def getMotor(self):
     try:
       return int(self.motor)
     except ValueError:
       return self.motor
-    
+
   def setTries(self, tries):
     "Setzt die Anzahl der Versuche zur Kommunikation."
     self.tries = tries
-    
+
   def getTimeout(self):
     return self.comPort.timeout
-  
+
   def setTimeout(self, time):
     self.comPort.timeout = time
