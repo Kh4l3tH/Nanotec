@@ -3,7 +3,6 @@ Created on Jun 16, 2011
 
 @author: maxim
 '''
-import string
 
 class Nanotec(object):
   def __init__(self, comPort, tries = 3):
@@ -64,13 +63,13 @@ class Nanotec(object):
         raise ValueError('OSError ?????')
         return False
       if wholeCmd != '':
-        splitCmd = string.split(wholeCmd, ' ')
+        splitCmd = wholeCmd.split(' ')
         sign = 0
         if splitCmd[0] == wholeCmd:
-          splitCmd = string.split(wholeCmd, '+')
+          splitCmd = wholeCmd.split('+')
           sign = 1
         if splitCmd[0] == wholeCmd:
-          splitCmd = string.split(wholeCmd, '-')
+          splitCmd = wholeCmd.split('-')
           sign = -1
         if splitCmd[0] != self.motor+strCmd:
           print splitCmd[0]
@@ -107,7 +106,7 @@ class Nanotec(object):
         raise ValueError('OSError ?????')
         return False
       if wholeCmd != '':
-        splitCmd = string.split(wholeCmd, '$')
+        splitCmd = wholeCmd.split('$')
         try:
           motorVal = int(splitCmd[0])
           stateVal = int(splitCmd[1])
