@@ -8,7 +8,8 @@ import io
 class Nanotec(object):
   def __init__(self, comPort, tries = 3):
     self.tries = tries
-    self.comPort = io.TextIOWrapper(io.BufferedRWPair(comPort, comPort, newline='\r'))
+    self.comPort = io.TextIOWrapper(io.BufferedRWPair(comPort, comPort), newline='\r')
+    self.comPort.flush()
     self.setMotor(1)
     self.connected = True
 
@@ -27,7 +28,7 @@ class Nanotec(object):
     cmd = self.motor+strCmd+strVal+'\r'
     while counter < self.tries:
       try:
-        self.comPort.write('#'+cmd)
+        self.comPort.write(unicode('#'+cmd))
         self.comPort.flush()
         line = self.comPort.readline()
       except OSError:
@@ -57,7 +58,7 @@ class Nanotec(object):
     while counter < self.tries:
       counter += 1
       try:
-        self.comPort.write(cmd)
+        self.comPort.write(unicode(cmd))
         self.comPort.flush()
         wholeCmd = self.comPort.readline()
       except OSError:
@@ -101,7 +102,7 @@ class Nanotec(object):
     while counter < self.tries:
       counter += 1
       try:
-        self.comPort.write(cmd)
+        self.comPort.write(unicode(cmd))
         self.comPort.flush()
         wholeCmd = self.comPort.readline()
       except OSError:
