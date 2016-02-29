@@ -3,12 +3,12 @@ Created on Jun 16, 2011
 
 @author: maxim
 '''
+import io
 
 class Nanotec(object):
   def __init__(self, comPort, tries = 3):
     self.tries = tries
-    self.comPort = comPort
-    self.comPort.flushInput()
+    self.comPort = io.TextIOWrapper(io.BufferedRWPair(comPort, comPort, newline='\r'))
     self.setMotor(1)
     self.connected = True
 
@@ -28,7 +28,8 @@ class Nanotec(object):
     while counter < self.tries:
       try:
         self.comPort.write('#'+cmd)
-        line = self.comPort.readline(eol='\r')
+        self.comPort.flush()
+        line = self.comPort.readline()
       except OSError:
         self.connected = False
         raise ValueError('OSError ?????')
@@ -57,7 +58,8 @@ class Nanotec(object):
       counter += 1
       try:
         self.comPort.write(cmd)
-        wholeCmd = self.comPort.readline(eol='\r')
+        self.comPort.flush()
+        wholeCmd = self.comPort.readline()
       except OSError:
         self.connected = False
         raise ValueError('OSError ?????')
@@ -100,7 +102,8 @@ class Nanotec(object):
       counter += 1
       try:
         self.comPort.write(cmd)
-        wholeCmd = self.comPort.readline(eol='\r')
+        self.comPort.flush()
+        wholeCmd = self.comPort.readline()
       except OSError:
         self.connected = False
         raise ValueError('OSError ?????')
