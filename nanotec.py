@@ -75,15 +75,18 @@ class Nanotec(object):
           splitCmd = wholeCmd.split('-')
           sign = -1
         if splitCmd[0] != self.motor+strCmd:
-          print splitCmd[0]
-          raise ValueError('Falscher Befehl!')
+          print 'FEHLER!!!!!!!!!!!!!!!!!!!!!!!!!! {0}'.format(splitCmd[0])
+          #raise ValueError('Falscher Befehl!')
+          continue
           return -1
         if sign > 0 or sign < 0:
           try:
             value = int(splitCmd[1])
           except ValueError:
-            print "ValueError2"
-            raise ValueError(splitCmd)
+            print "ValueError2!!!!!!!!!!!!!!!!"
+            print splitCmd
+            #raise ValueError(splitCmd)
+            continue
             return -1
           return sign*value
         else:
@@ -115,8 +118,10 @@ class Nanotec(object):
           motorVal = int(splitCmd[0])
           stateVal = int(splitCmd[1])
         except ValueError:
-          print "ValueError2"
-          raise ValueError(splitCmd)
+          print "ValueError3!!!!!!!!!!!!!!!!!!1"
+          print splitCmd
+          #raise ValueError(splitCmd)
+          continue
           return False
         return stateVal
     if counter == self.tries:
